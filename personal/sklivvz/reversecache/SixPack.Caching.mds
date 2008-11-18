@@ -1,0 +1,25 @@
+<Combine name="SixPack.Caching" fileversion="2.0" description="SixPack caching classes. Experimental.">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="SixPack.Caching" configuration="Debug" />
+      <Entry build="True" name="SixPack.Caching.Test.Web" configuration="Debug" />
+      <Entry build="True" name="SixPack.Caching.Sample" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="SixPack.Caching" configuration="Release" />
+      <Entry build="True" name="SixPack.Caching.Test.Web" configuration="Release" />
+      <Entry build="True" name="SixPack.Caching.Sample" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="SixPack.Caching" single="True">
+    <Execute type="None" entry="SixPack.Caching" />
+    <Execute type="None" entry="SixPack.Caching.Test.Web" />
+    <Execute type="None" entry="SixPack.Caching.Sample" />
+  </StartMode>
+  <MonoDevelop.ChangeLogAddIn.ChangeLogInfo policy="UpdateNearestChangeLog" />
+  <Entries>
+    <Entry filename="SixPack.Caching/SixPack.Caching.mdp" />
+    <Entry filename="SixPack.Caching.Test.Web/ReverseCachingTest.mdp" />
+    <Entry filename="SixPack.Caching.Sample/SixPack.Caching.mdp" />
+  </Entries>
+</Combine>
