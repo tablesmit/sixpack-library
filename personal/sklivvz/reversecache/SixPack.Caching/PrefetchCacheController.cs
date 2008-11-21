@@ -70,7 +70,9 @@ namespace SixPack.Caching
 					//return new ReturnMessage(null, null, 0, methodMessage.LogicalCallContext, methodMessage);
 				}
 				
+#if DEBUG
 				Log.Instance.Add("Before wait for content (null check)");
+#endif
 				// We wait for the agent to retrieve the content
 				agent.WaitForNotNullContent(10000);
 				
@@ -98,9 +100,13 @@ namespace SixPack.Caching
 			// The content must be up-to-date, but it's old.
 			// We wait for new content
 			
+#if DEBUG
 			Log.Instance.AddFormat("Before wait for content (expiry check) {0:s:fffff}, {1:s:fffff}",agent.Content.ExpiryDate,DateTime.Now);
+#endif
 			agent.WaitForFreshContent(10000);
+#if DEBUG
 			Log.Instance.AddFormat("After wait for content (expiry check) {0:s:fffff}, {1:s:fffff}",agent.Content.ExpiryDate,DateTime.Now);
+#endif
 			
 			// If the content is expired we are DOOMED and we must return an exception
 			if (agent.Content.ExpiryDate < DateTime.Now)

@@ -117,7 +117,9 @@ namespace SixPack.Caching
 			
 			TimerCallback timerDelegate = new TimerCallback(timerFunction.Fetch);
 			timer = new Timer(timerDelegate, null, 0, cacheTime*1000);
-			Log.Instance.AddFormat("PrefetchCacheAgent - ...timer for '{0}' spawned!", sig);			
+#if DEBUG
+			Log.Instance.AddFormat("PrefetchCacheAgent - ...timer for '{0}' spawned!", sig);
+#endif
 		}
 			
 		/// <summary>
@@ -125,19 +127,29 @@ namespace SixPack.Caching
 		/// </summary>
 		public void WaitForNotNullContent(int millisecondMaxWait)
 		{
+#if DEBUG
 			Log.Instance.AddFormat("WaitForNotNullContent - {0} - acquiring lock...", sig);
+#endif
 			// Waits for an (eventually still in progress) cache fetching cycle to complete.
 			lock (content)
 			{
+#if DEBUG
 				Log.Instance.AddFormat("WaitForNotNullContent - {0} - ...got lock...", sig);
+#endif
 				if (!HasContent)
 				{
+#if DEBUG
 					Log.Instance.AddFormat("WaitForNotNullContent - {0} - No contentent, calling Monitor.Wait()...", sig);
+#endif
 					Monitor.Wait(content, millisecondMaxWait);
+#if DEBUG
 					Log.Instance.AddFormat("WaitForNotNullContent - {0} - ...Monitor.Wait() set me free!", sig);
+#endif
 				}
 			}
+#if DEBUG
 			Log.Instance.AddFormat("WaitForNotNullContent - {0} - ...released lock!", sig);
+#endif
 		}
 
 		/// <summary>
@@ -145,19 +157,29 @@ namespace SixPack.Caching
 		/// </summary>
 		public void WaitForFreshContent(int millisecondMaxWait)
 		{
+#if DEBUG
 			Log.Instance.AddFormat("WaitForFreshContent - {0} - acquiring lock...", sig);
+#endif
 			// Waits for an (eventually still in progress) cache fetching cycle to complete.
 			lock (content)
 			{
+#if DEBUG
 				Log.Instance.AddFormat("WaitForFreshContent - {0} - ...got lock...", sig);
+#endif
 				if (DateTime.Now > content.ExpiryDate)
 				{
+#if DEBUG
 					Log.Instance.AddFormat("WaitForFreshContent - {0} - No contentent, calling Monitor.Wait()...", sig);
+#endif
 					Monitor.Wait(content, millisecondMaxWait);
+#if DEBUG
 					Log.Instance.AddFormat("WaitForFreshContent - {0} - ...Monitor.Wait() set me free!", sig);
+#endif
 				}
 			}
+#if DEBUG
 			Log.Instance.AddFormat("WaitForFreshContent - {0} - ...released lock!", sig);
+#endif
 		}
 
 		protected void OnIdling (EventArgs e)
