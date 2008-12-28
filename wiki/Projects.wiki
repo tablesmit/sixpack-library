@@ -1,0 +1,17 @@
+#summary List of project using the SixPack library code
+#labels Phase-Support
+List of sites currently using the library
+
+==Banking==
+ * Banco Espirito Santo Angola http://www.besa.ao
+
+==Consumer Goods==
+ * Coca-Cola Portugal http://www.cocacola.pt
+ * Coca-Cola Euro2008 http://www.euro2008album.com
+ * McDonald's Uailde http://www.uailde.com
+ * SuperBock http://www.superbock.com
+ * Sagres http://www.sagres.pt
+ * Carlsberg Portugal http://www.sagres.pt
+
+==Mobile==
+ * UZO http://www.uzo.pt
