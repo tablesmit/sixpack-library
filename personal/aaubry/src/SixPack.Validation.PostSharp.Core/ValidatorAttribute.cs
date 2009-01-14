@@ -1,7 +1,7 @@
 ﻿using System;
 using PostSharp.Extensibility;
 
-namespace SixPack.Validation.PostSharp
+namespace SixPack.Validation.PostSharp.Core
 {
 	/// <summary>
 	/// Base class for validating parameters.

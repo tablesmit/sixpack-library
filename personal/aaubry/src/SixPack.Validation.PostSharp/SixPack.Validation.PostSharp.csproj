@@ -47,25 +47,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomValidatorAttribute.cs" />
-    <Compile Include="IMethodValidator.cs" />
-    <Compile Include="InternalHelperMethods.cs" />
     <Compile Include="IntervalAttribute.cs" />
-    <Compile Include="IParameterValidator.cs" />
-    <Compile Include="IValidator.cs" />
-    <Compile Include="MethodValidatorAttribute.cs" />
     <Compile Include="NotEmptyAttribute.cs" />
     <Compile Include="NotNullAttribute.cs" />
-    <Compile Include="ParameterDictionary.cs" />
-    <Compile Include="ParameterKindDetector.cs" />
-    <Compile Include="ParameterKinds.cs" />
     <Compile Include="ParameterValidatorAttribute.cs" />
     <Compile Include="PatternAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecificExceptionMethodValidatorAttribute.cs" />
     <Compile Include="SpecificExceptionParameterValidatorAttribute.cs" />
-    <Compile Include="ValidatorAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SixPack.Validation.PostSharp.Core\SixPack.Validation.PostSharp.Core.csproj">
+      <Project>{B79E4E3C-38DC-4560-AC3F-EBCFE5242D7C}</Project>
+      <Name>SixPack.Validation.PostSharp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SixPack.Validation\SixPack.Validation.csproj">
       <Project>{E196B9C3-4D95-4716-8D7E-D3E71ED5C56D}</Project>
       <Name>SixPack.Validation</Name>

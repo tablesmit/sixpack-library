@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{419E4BCB-15FD-4AD3-B5B8-5DD45FCA3CA8}</ProjectGuid>
+    <ProjectGuid>{B79E4E3C-38DC-4560-AC3F-EBCFE5242D7C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SixPack.Validation.PostSharp.CompileTime</RootNamespace>
-    <AssemblyName>SixPack.Validation.PostSharp.CompileTime</AssemblyName>
+    <RootNamespace>SixPack.Validation.PostSharp.Core</RootNamespace>
+    <AssemblyName>SixPack.Validation.PostSharp.Core</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
@@ -46,26 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttributeBasedAdvice.cs" />
-    <Compile Include="MethodProcessorAdvice.cs" />
-    <Compile Include="ParameterProcessorAdvice.cs" />
-    <Compile Include="ParameterProcessorTask.cs" />
+    <Compile Include="IMethodValidator.cs" />
+    <Compile Include="InternalHelperMethods.cs" />
+    <Compile Include="IParameterValidator.cs" />
+    <Compile Include="IValidator.cs" />
+    <Compile Include="MethodValidatorAttribute.cs" />
+    <Compile Include="ParameterDictionary.cs" />
+    <Compile Include="ParameterKindDetector.cs" />
+    <Compile Include="ParameterKinds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="SixPack.Validation.psplugin">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SixPack.Validation.PostSharp.Core\SixPack.Validation.PostSharp.Core.csproj">
-      <Project>{B79E4E3C-38DC-4560-AC3F-EBCFE5242D7C}</Project>
-      <Name>SixPack.Validation.PostSharp.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SixPack.Validation\SixPack.Validation.csproj">
-      <Project>{E196B9C3-4D95-4716-8D7E-D3E71ED5C56D}</Project>
-      <Name>SixPack.Validation</Name>
-    </ProjectReference>
+    <Compile Include="ValidatorAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -75,7 +65,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "c:\program files\PostSharp 1.0"</PostBuildEvent>
-  </PropertyGroup>
 </Project>

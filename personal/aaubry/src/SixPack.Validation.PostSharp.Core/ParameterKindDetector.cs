@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using System.Diagnostics;
+using SixPack.Validation.PostSharp.Core;
 
-namespace SixPack.Validation.PostSharp
+namespace SixPack.Validation.PostSharp.Core
 {
 	internal static class ParameterKindDetector
 	{

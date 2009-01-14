@@ -5,12 +5,12 @@ using PostSharp.CodeModel;
 using PostSharp.CodeWeaver;
 using PostSharp.Collections;
 using PostSharp.Extensibility;
-using SixPack.Validation.PostSharp;
+using SixPack.Validation.PostSharp.Core;
 
 namespace SixPack.Validation.PostSharp.CompileTime
 {
 	[CLSCompliant(false)]
-	public abstract class AttributeBasedAdvice<TValidatorAttribute> : IAdvice, IDisposable where TValidatorAttribute : IValidator
+	public abstract class AttributeBasedAdvice<TValidatorAttribute> : IAdvice, IDisposable where TValidatorAttribute : class, IValidator
 	{
 		private readonly CustomAttributeDeclaration attribute;
 		private FieldDefDeclaration field;

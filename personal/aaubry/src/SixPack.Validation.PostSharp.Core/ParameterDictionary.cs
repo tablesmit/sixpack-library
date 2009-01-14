@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace SixPack.Validation.PostSharp
+namespace SixPack.Validation.PostSharp.Core
 {
 	/// <summary>
 	/// Collection of parameters.

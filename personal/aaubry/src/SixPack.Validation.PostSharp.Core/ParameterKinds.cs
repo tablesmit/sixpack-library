@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SixPack.Validation.PostSharp
+namespace SixPack.Validation.PostSharp.Core
 {
 	[Flags]
 	internal enum ParameterKinds

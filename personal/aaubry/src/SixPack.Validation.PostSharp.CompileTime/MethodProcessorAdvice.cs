@@ -2,7 +2,7 @@
 using PostSharp.CodeWeaver;
 using PostSharp.CodeModel;
 using PostSharp.Extensibility;
-using SixPack.Validation.PostSharp;
+using SixPack.Validation.PostSharp.Core;
 
 namespace SixPack.Validation.PostSharp.CompileTime
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PostSharp.CodeModel;
 using PostSharp.Extensibility;
 
-namespace SixPack.Validation.PostSharp
+namespace SixPack.Validation.PostSharp.Core
 {
 	/// <summary>
 	/// Interface that attributes must implement for validating multiple method parameters.

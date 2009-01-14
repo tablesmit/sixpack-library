@@ -2,6 +2,7 @@
 using System.Reflection;
 using PostSharp.Extensibility;
 using PostSharp.CodeModel;
+using SixPack.Validation.PostSharp.Core;
 
 namespace SixPack.Validation.PostSharp
 {

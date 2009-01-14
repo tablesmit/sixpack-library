@@ -3,8 +3,8 @@ using System.Diagnostics;
 using PostSharp.CodeWeaver;
 using PostSharp.CodeModel;
 using PostSharp.Extensibility;
-using SixPack.Validation.PostSharp;
 using System.Reflection;
+using SixPack.Validation.PostSharp.Core;
 
 namespace SixPack.Validation.PostSharp.CompileTime
 {

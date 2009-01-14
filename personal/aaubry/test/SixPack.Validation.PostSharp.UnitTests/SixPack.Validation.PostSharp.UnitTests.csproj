@@ -59,6 +59,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\SixPack.Validation.PostSharp.Core\SixPack.Validation.PostSharp.Core.csproj">
+      <Project>{B79E4E3C-38DC-4560-AC3F-EBCFE5242D7C}</Project>
+      <Name>SixPack.Validation.PostSharp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\SixPack.Validation.PostSharp\SixPack.Validation.PostSharp.csproj">
       <Project>{4CA76C77-7433-4EDA-9F46-41A62C77BA6A}</Project>
       <Name>SixPack.Validation.PostSharp</Name>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PostSharp.CodeModel;
 using PostSharp.CodeWeaver;
 using PostSharp.Extensibility;
-using SixPack.Validation.PostSharp;
+using SixPack.Validation.PostSharp.Core;
 
 namespace SixPack.Validation.PostSharp.CompileTime
 {
@@ -19,8 +19,6 @@ namespace SixPack.Validation.PostSharp.CompileTime
 		/// <param name="codeWeaver">The weaver to which advices should be added.</param>
 		public void ProvideAdvices(Weaver codeWeaver)
 		{
-			Console.WriteLine("ProvideAdvices");
-
 			foreach (MethodDefDeclaration method in Enumerate(Project.Module.GetDeclarationEnumerator(TokenType.MethodDef)))
 			{
 				int parameterIndex = 0;

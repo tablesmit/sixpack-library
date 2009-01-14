@@ -137,7 +137,7 @@ namespace SixPack.Validation.PostSharp
 			Type itemType = interfaceType.GetGenericArguments()[0];
 
 			MethodInfo openValidateMethod = typeof(NotEmptyAttribute).GetMethod("MakeValidateMethod", BindingFlags.Static | BindingFlags.NonPublic);
-			MethodInfo makeValidateMethod = openValidateMethod.MakeGenericMethod(interfaceType, itemType);
+			MethodInfo makeValidateMethod = openValidateMethod.MakeGenericMethod(itemType);
 
 			return (ValidateMethod)makeValidateMethod.Invoke(null, new object[0]);
 		}
@@ -147,7 +147,7 @@ namespace SixPack.Validation.PostSharp
 			Type itemType = interfaceType.GetGenericArguments()[0];
 
 			MethodInfo openValidateMethodWithMessage = typeof(NotEmptyAttribute).GetMethod("MakeValidateMethod", BindingFlags.Static | BindingFlags.NonPublic);
-			MethodInfo makeValidateMethodWithMessage = openValidateMethodWithMessage.MakeGenericMethod(interfaceType, itemType);
+			MethodInfo makeValidateMethodWithMessage = openValidateMethodWithMessage.MakeGenericMethod(itemType);
 
 			return (ValidateMethodWithMessage)makeValidateMethodWithMessage.Invoke(null, new object[0]);
 		}
@@ -157,7 +157,7 @@ namespace SixPack.Validation.PostSharp
 			Type itemType = interfaceType.GetGenericArguments()[0];
 
 			MethodInfo openValidateMethodWithException = typeof(NotEmptyAttribute).GetMethod("MakeValidateMethod", BindingFlags.Static | BindingFlags.NonPublic);
-			MethodInfo makeValidateMethodWithException = openValidateMethodWithException.MakeGenericMethod(interfaceType, itemType);
+			MethodInfo makeValidateMethodWithException = openValidateMethodWithException.MakeGenericMethod(itemType);
 
 			return (ValidateMethodWithException)makeValidateMethodWithException.Invoke(null, new object[0]);
 		}
