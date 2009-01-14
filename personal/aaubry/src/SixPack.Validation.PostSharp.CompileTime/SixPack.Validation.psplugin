@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PlugIn xmlns="http://schemas.postsharp.org/1.0/configuration">
+	<TaskType Name="ParameterProcessor" Implementation="SixPack.Validation.PostSharp.CompileTime.ParameterProcessorTask, SixPack.Validation.PostSharp.CompileTime" Phase="Transform">
+		<Dependency TaskType="CodeWeaver" Position="After"/>
+	</TaskType>
+</PlugIn>

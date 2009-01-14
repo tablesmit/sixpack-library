@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="1.36" Name="SixPack.Private">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">c:\program files\microsoft fxcop 1.36\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded" NewOnly="False" />
+   <Report Status="Active" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/SixPack.Validation.PostSharp.CompileTime/bin/Release/SixPack.Validation.PostSharp.CompileTime.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/SixPack.Validation.PostSharp/bin/Release/SixPack.Validation.PostSharp.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/SixPack.Validation/bin/Release/SixPack.Validation.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/SixPack.Web.PostSharp/bin/Release/SixPack.Web.PostSharp.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="1.36">
+  <Targets>
+   <Target Name="$(ProjectDir)/SixPack.Validation.PostSharp/bin/Release/SixPack.Validation.PostSharp.dll">
+    <Modules>
+     <Module Name="sixpack.validation.postsharp.dll">
+      <Namespaces>
+       <Namespace Name="SixPack.Validation.PostSharp">
+        <Types>
+         <Type Name="IntervalAttribute">
+          <Messages>
+           <Message TypeName="MarkAttributesWithAttributeUsage" Category="Microsoft.Design" CheckId="CA1018" Status="Excluded" Created="2009-01-13 18:27:06Z">
+            <Issue Name="Inherited" Certainty="75" Level="Warning">
+             <Item>'IntervalAttribute'</Item>
+            </Issue>
+            <Notes>
+             <User Name="antoine.aubry">
+              <Note Id="1" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="NotEmptyAttribute">
+          <Messages>
+           <Message TypeName="MarkAttributesWithAttributeUsage" Category="Microsoft.Design" CheckId="CA1018" Status="Excluded" Created="2009-01-13 18:27:06Z">
+            <Issue Name="Inherited" Certainty="75" Level="Warning">
+             <Item>'NotEmptyAttribute'</Item>
+            </Issue>
+            <Notes>
+             <User Name="antoine.aubry">
+              <Note Id="1" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="NotNullAttribute">
+          <Messages>
+           <Message TypeName="MarkAttributesWithAttributeUsage" Category="Microsoft.Design" CheckId="CA1018" Status="Excluded" Created="2009-01-13 18:27:06Z">
+            <Issue Name="Inherited" Certainty="75" Level="Warning">
+             <Item>'NotNullAttribute'</Item>
+            </Issue>
+            <Notes>
+             <User Name="antoine.aubry">
+              <Note Id="1" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="PatternAttribute">
+          <Messages>
+           <Message TypeName="MarkAttributesWithAttributeUsage" Category="Microsoft.Design" CheckId="CA1018" Status="Excluded" Created="2009-01-13 18:27:06Z">
+            <Issue Name="Inherited" Certainty="75" Level="Warning">
+             <Item>'PatternAttribute'</Item>
+            </Issue>
+            <Notes>
+             <User Name="antoine.aubry">
+              <Note Id="1" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValidatorAttribute">
+          <Members>
+           <Member Name="#GetPostSharpRequirements()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2009-01-13 18:27:06Z">
+              <Issue Certainty="50">
+               <Item>'ValidatorAttribute.GetPostSharpRequirements()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="antoine.aubry">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/SixPack.Web.PostSharp/bin/Release/SixPack.Web.PostSharp.dll">
+    <Modules>
+     <Module Name="sixpack.web.postsharp.dll">
+      <Namespaces>
+       <Namespace Name="SixPack.Web.PostSharp">
+        <Types>
+         <Type Name="SessionVariableAttribute">
+          <Messages>
+           <Message TypeName="MarkAttributesWithAttributeUsage" Category="Microsoft.Design" CheckId="CA1018" Status="Excluded" Created="2009-01-13 18:32:33Z">
+            <Issue Name="Inherited" Certainty="75" Level="Warning">
+             <Item>'SessionVariableAttribute'</Item>
+            </Issue>
+            <Notes>
+             <User Name="antoine.aubry">
+              <Note Id="1" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ViewStateVariableAttribute">
+          <Messages>
+           <Message TypeName="MarkAttributesWithAttributeUsage" Category="Microsoft.Design" CheckId="CA1018" Status="Excluded" Created="2009-01-13 18:32:33Z">
+            <Issue Name="Inherited" Certainty="75" Level="Warning">
+             <Item>'ViewStateVariableAttribute'</Item>
+            </Issue>
+            <Notes>
+             <User Name="antoine.aubry">
+              <Note Id="1" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Notes>
+   <User Name="antoine.aubry">
+    <Note Id="0" Modified="2009-01-13 18:35:51Z">This method name comes from an interface and should not be modified.</Note>
+    <Note Id="1" Modified="2009-01-13 18:39:20Z">Adding the attribute would violate the DRY principle. It is the responsibility of the documentation generation tool to make the attribute visible on the documentation.</Note>
+   </User>
+  </Notes>
+  <Rules>
+   <Rule TypeName="MarkAttributesWithAttributeUsage" Category="Microsoft.Design" CheckId="CA1018">
+    <Resolution Name="Inherited">Even though attribute {0} inherits AttributeUsage from its base type, you should consider explicitly specifying AttributeUsage on the type to improve code readability and documentation.</Resolution>
+   </Rule>
+   <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
+    <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>
