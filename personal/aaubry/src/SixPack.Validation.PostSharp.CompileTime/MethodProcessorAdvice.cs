@@ -66,20 +66,23 @@ namespace SixPack.Validation.PostSharp.CompileTime
 				writer.EmitInstruction(OpCodeNumber.Ldarg_0);
 			}
 
-			writer.EmitInstructionMethod(OpCodeNumber.Call, context.Method.Module.FindMethod(typeof(InternalHelperMethods).GetMethod("CreateParameterCollection"), BindingOptions.Default));
+			//writer.EmitInstructionMethod(OpCodeNumber.Call, context.Method.Module.FindMethod(typeof(InternalHelperMethods).GetMethod("CreateParameterCollection"), BindingOptions.Default));
 
-			IMethod add = context.Method.Module.FindMethod(typeof(ParameterDictionary).GetMethod("Add", new[] { typeof(string), typeof(object) }), BindingOptions.Default);
+			//IMethod add = context.Method.Module.FindMethod(typeof(ParameterDictionary).GetMethod("Add", new[] { typeof(string), typeof(object) }), BindingOptions.Default);
 
-			int parameterIndex = 0;
-			foreach (var parameter in Method.Parameters)
-			{
-				writer.EmitInstruction(OpCodeNumber.Dup);
+			//int parameterIndex = 0;
+			//foreach (var parameter in Method.Parameters)
+			//{
+			//    writer.EmitInstruction(OpCodeNumber.Dup);
 
-				writer.EmitInstructionString(OpCodeNumber.Ldstr, new LiteralString(parameter.Name));
-				writer.EmitInstructionInt32(OpCodeNumber.Ldarg, parameterIndex++);
+			//    writer.EmitInstructionString(OpCodeNumber.Ldstr, new LiteralString(parameter.Name));
+			//    writer.EmitInstructionInt32(OpCodeNumber.Ldarg, parameterIndex++);
 
-				writer.EmitInstructionMethod(OpCodeNumber.Callvirt, add);
-			}
+			//    writer.EmitInstructionMethod(OpCodeNumber.Callvirt, add);
+			//}
+
+			//writer.EmitInstruction(OpCodeNumber.Ldnull);
+			writer.EmitInstructionInt32(OpCodeNumber.Ldloc, writer.CurrentInstructionSequence.MethodBody.LocalVariableCount);
 
 			IMethod validate = context.Method.Module.FindMethod(typeof(MethodValidatorAttribute).GetMethod("Validate"), BindingOptions.Default);
 			writer.EmitInstructionMethod(OpCodeNumber.Callvirt, validate);

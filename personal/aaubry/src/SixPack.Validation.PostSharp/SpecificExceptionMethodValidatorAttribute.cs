@@ -96,7 +96,7 @@ namespace SixPack.Validation.PostSharp
 			ConstructorInfo constructor = exception.GetConstructor(
 				BindingFlags.Public | BindingFlags.Instance,
 				null,
-				new Type[] { typeof(string) },
+				new[] { typeof(string) },
 				null
 			);
 

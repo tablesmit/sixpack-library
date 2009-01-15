@@ -13,78 +13,67 @@ namespace SixPack.Validation.PostSharp
     [Serializable]
 	public sealed class PatternAttribute : SpecificExceptionParameterValidatorAttribute
     {
-        private readonly string expression;
-
-        /// <summary>
-        /// Gets or sets the expression to be used as validation.
-        /// </summary>
-        /// <value>The validation expression.</value>
-        public string Expression
-        {
-            get { return expression; }
-        }
-
-    	private RegexOptions options = RegexOptions.None;
+		private readonly string expression;
 
 		/// <summary>
-		/// Gets or sets the options of the regular expression.
+		/// Gets or sets the expression to be used as validation.
 		/// </summary>
-    	public RegexOptions Options
-    	{
-    		get
-    		{
-    			return options;
-    		}
-			set
+		/// <value>The validation expression.</value>
+		public string Expression
+		{
+			get
 			{
-				options = value;
+				return expression;
 			}
-    	}
+		}
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PatternAttribute"/> class.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        public PatternAttribute(string expression) {
-            this.expression = expression;
-        }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="PatternAttribute"/> class.
+		/// </summary>
+		/// <param name="expression">The expression.</param>
+		public PatternAttribute(string expression)
+		{
+			this.expression = expression;
+		}
 
-        /// <summary>
-        /// Method called at compile-time to validate the application of this
-        /// custom attribute on a specific parameter.
-        /// </summary>
-        /// <param name="parameter">The parameter on which the attribute is applied.</param>
-        /// <param name="messages">A <see cref="IMessageSink"/> where to write error messages.</param>
-        /// <remarks>
-        /// This method should use <paramref name="messages"/> to report any error encountered
-        /// instead of throwing an exception.
-        /// </remarks>
+		/// <summary>
+		/// Method called at compile-time to validate the application of this
+		/// custom attribute on a specific parameter.
+		/// </summary>
+		/// <param name="parameter">The parameter on which the attribute is applied.</param>
+		/// <param name="messages">A <see cref="IMessageSink"/> where to write error messages.</param>
+		/// <remarks>
+		/// This method should use <paramref name="messages"/> to report any error encountered
+		/// instead of throwing an exception.
+		/// </remarks>
 		[CLSCompliant(false)]
 		public override void CompileTimeValidate(ParameterDeclaration parameter, IMessageSink messages)
-        {
-            base.CompileTimeValidate(parameter, messages);
+		{
+			base.CompileTimeValidate(parameter, messages);
 
-        	Type parameterType = parameter.ParameterType.GetSystemType(null, null);
-            bool isString = parameterType == typeof(string);
+			Type parameterType = parameter.ParameterType.GetSystemType(null, null);
+			bool isString = parameterType == typeof(string);
 
-            if(!isString) {
-                messages.Write(new Message(
+			if (!isString)
+			{
+				messages.Write(new Message(
 					SeverityType.Error,
 					"PatternAttribute_TypeNotSupported",
 					string.Format(CultureInfo.InvariantCulture, "The type '{0}' is not a string to perform the expression validation on.", parameterType.Name),
 					GetType().FullName
 				));
-            }
+			}
 
-            if (string.IsNullOrEmpty(expression)) {
-                messages.Write(new Message(
-                    SeverityType.Error,
-                    "PatternAttribute_PatternNotNullOrEmpty",
-                    "The expression pattern must not be null or empty.",
-                    GetType().FullName
-                ));
-            }
-        }
+			if (string.IsNullOrEmpty(expression))
+			{
+				messages.Write(new Message(
+					SeverityType.Error,
+					"PatternAttribute_PatternNotNullOrEmpty",
+					"The expression pattern must not be null or empty.",
+					GetType().FullName
+				));
+			}
+		}
 
 		/// <summary>
 		/// Validates the parameter.
@@ -93,23 +82,17 @@ namespace SixPack.Validation.PostSharp
 		/// <param name="value">The value of the parameter.</param>
 		/// <param name="parameterName">Name of the parameter.</param>
 		public override void Validate(object target, object value, string parameterName)
-        {
-			string text = (string)value;
-			if (Exception == null)
+		{
+			if (value != null)
 			{
-				if (Message == null)
+				string realValue = (string)value;
+				Match match = Regex.Match(realValue, expression);
+				bool isValid = ((match.Success && (match.Index == 0)));
+				if (!isValid)
 				{
-					Pattern.Validate(text, expression, options, parameterName);
+					ValidationFailed("The parameter did not match the defined pattern.", value, parameterName);
 				}
-				else
-				{
-					Pattern.Validate(text, expression, options, parameterName, Message);
-				}
-			}
-			else
-			{
-				Pattern.Validate(text, expression, options, parameterName, CreateException);
 			}
 		}
-    }
+	}
 }

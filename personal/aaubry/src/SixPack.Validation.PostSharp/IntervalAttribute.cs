@@ -83,6 +83,54 @@ namespace SixPack.Validation.PostSharp
 		}
 
 		/// <summary>
+		/// Validates the parameter.
+		/// </summary>
+		/// <param name="target">The object on which the method is being invoked.</param>
+		/// <param name="value">The value of the parameter.</param>
+		/// <param name="parameterName">Name of the parameter.</param>
+		public override void Validate(object target, object value, string parameterName)
+		{
+			if (value != null)
+			{
+				IComparable comparable = (IComparable)value;
+				ValidateBoundary(minMode, comparable.CompareTo(min), value, parameterName);
+				ValidateBoundary(maxMode, -comparable.CompareTo(max), value, parameterName);
+			}
+		}
+
+		private void ValidateBoundary(BoundaryMode comparisonMode, int comparisonResult, object parameterValue, string parameterName)
+		{
+			if (comparisonResult < 0 || (comparisonResult == 0 && comparisonMode == BoundaryMode.Exclusive))
+			{
+				ValidationFailed(null, parameterValue, parameterName);
+			}
+		}
+
+		/// <summary>
+		/// Creates the default exception for the validator.
+		/// </summary>
+		/// <param name="errorMessage">The error message.</param>
+		/// <param name="parameterName">Name of the parameter that is being validated.</param>
+		/// <param name="parameterValue">The value of the parameter.</param>
+		/// <returns></returns>
+		protected override Exception CreateDefaultException(string errorMessage, string parameterName, object parameterValue)
+		{
+			if (errorMessage == null)
+			{
+				errorMessage = string.Format(
+					CultureInfo.InvariantCulture,
+					"The argument must be in the interval {0}{1}, {2}{3}",
+					minMode == BoundaryMode.Inclusive ? '[' : ']',
+					min,
+					max,
+					maxMode == BoundaryMode.Inclusive ? ']' : '['
+				);
+			}
+
+			return new ArgumentOutOfRangeException(parameterName, parameterValue, errorMessage);
+		}
+
+		/// <summary>
 		/// Method called at compile-time to validate the application of this
 		/// custom attribute on a specific parameter.
 		/// </summary>
@@ -106,32 +154,6 @@ namespace SixPack.Validation.PostSharp
 					string.Format(CultureInfo.InvariantCulture, "The type '{0}' does not implement IComparable.", parameterType.Name),
 					GetType().FullName
 				));
-			}
-		}
-
-		/// <summary>
-		/// Validates the parameter.
-		/// </summary>
-		/// <param name="target">The object on which the method is being invoked.</param>
-		/// <param name="value">The value of the parameter.</param>
-		/// <param name="parameterName">Name of the parameter.</param>
-		public override void Validate(object target, object value, string parameterName)
-		{
-			IComparable comparable = (IComparable)value;
-			if (Exception == null)
-			{
-				if (Message == null)
-				{
-					Interval.Validate(comparable, min, minMode, max, maxMode, parameterName);
-				}
-				else
-				{
-					Interval.Validate(comparable, min, minMode, max, maxMode, parameterName, Message);
-				}
-			}
-			else
-			{
-				Interval.Validate(comparable, min, minMode, max, maxMode, parameterName, CreateException);
 			}
 		}
 	}

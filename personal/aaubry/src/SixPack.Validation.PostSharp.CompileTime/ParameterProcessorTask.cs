@@ -31,7 +31,8 @@ namespace SixPack.Validation.PostSharp.CompileTime
 						method,
 						parameter.CustomAttributes,
 						typeof(IParameterValidator),
-						attribute => new ParameterProcessorAdvice(attribute, parameterCopy, parameterIndexCopy)
+						attribute => new ParameterProcessorAdvice(attribute, parameterCopy, parameterIndexCopy),
+						false
 					);
 					++parameterIndex;
 				}
@@ -41,7 +42,8 @@ namespace SixPack.Validation.PostSharp.CompileTime
 					method,
 					method.CustomAttributes,
 					typeof(MethodValidatorAttribute),
-					attribute => new MethodProcessorAdvice(attribute)
+					attribute => new MethodProcessorAdvice(attribute),
+					true
 				);
 			}
 
@@ -56,7 +58,8 @@ namespace SixPack.Validation.PostSharp.CompileTime
 						method,
 						property.CustomAttributes,
 						typeof(IParameterValidator),
-						attribute => new ParameterProcessorAdvice(attribute, method.Parameters[0], 0)
+						attribute => new ParameterProcessorAdvice(attribute, method.Parameters[0], 0),
+						false
 					);
 				}
 			}
@@ -65,13 +68,26 @@ namespace SixPack.Validation.PostSharp.CompileTime
 
 		private delegate IAdvice CreateAdvice(CustomAttributeDeclaration attribute);
 
-		private static void AddAdvices(Weaver codeWeaver, MethodDefDeclaration method, IEnumerable<CustomAttributeDeclaration> customAttributes, Type validatorAttributeType, CreateAdvice createAdvice)
+		private static void AddAdvices(Weaver codeWeaver, MethodDefDeclaration method, IEnumerable<CustomAttributeDeclaration> customAttributes, Type validatorAttributeType, CreateAdvice createAdvice, bool needsParameterCollection)
 		{
+			bool parameterCollectionGenerated = false;
+
 			foreach (CustomAttributeDeclaration attribute in customAttributes)
 			{
 				Type attributeType = attribute.Constructor.DeclaringType.GetSystemType(null, null);
 				if (validatorAttributeType.IsAssignableFrom(attributeType))
 				{
+					if(needsParameterCollection && !parameterCollectionGenerated)
+					{
+						codeWeaver.AddMethodLevelAdvice(
+							new BuildParameterCollectionAdvice((MethodDefDeclaration)attribute.Parent),
+							new[] { method },
+							JoinPointKinds.BeforeMethodBody,
+							null
+						);
+						parameterCollectionGenerated = true;
+					}
+
 					IAdvice advice = createAdvice(attribute);
 					codeWeaver.AddMethodLevelAdvice(
 						advice,
@@ -85,6 +101,15 @@ namespace SixPack.Validation.PostSharp.CompileTime
 						new[] { method.DeclaringType }
 					);
 				}
+			}
+			if (parameterCollectionGenerated)
+			{
+				codeWeaver.AddMethodLevelAdvice(
+					new CleanupParameterCollectionAdvice(),
+					new[] { method },
+					JoinPointKinds.BeforeMethodBody,
+					null
+				);
 			}
 		}
 

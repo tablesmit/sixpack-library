@@ -49,7 +49,7 @@ namespace SixPack.Validation.PostSharp
 				return;
 			}
 
-			if(typeof(ICollection).IsAssignableFrom(parameterType))
+			if (typeof(ICollection).IsAssignableFrom(parameterType))
 			{
 				parameterKind = ParameterKind.ICollection;
 				return;
@@ -58,22 +58,7 @@ namespace SixPack.Validation.PostSharp
 			if (TypeIsICollectionOfT(parameterType))
 			{
 				parameterKind = ParameterKind.ICollectionOfT;
-				//getCount = CreateGetCountDelegate(parameter.ParameterType.GetSystemType(null, null));
-
-				Type interfaceType = parameter.ParameterType.GetSystemType(null, null);
-				if(Exception != null)
-				{
-					validateMethodWithException = CreateValidateMethodWithException(interfaceType);
-				}
-				else if(Message != null)
-				{
-					validateMethodWithMessage = CreateValidateMethodWithMessage(interfaceType);
-				}
-				else
-				{
-					validateMethod = CreateValidateMethod(interfaceType);
-				}
-
+				getCount = CreateGetCountDelegate(parameter.ParameterType.GetSystemType(null, null));
 				return;
 			}
 
@@ -110,61 +95,27 @@ namespace SixPack.Validation.PostSharp
 				type.Name == typeof(ICollection<>).Name;
 		}
 
-		private delegate void ValidateMethod(object value, string parameterName);
-		private delegate void ValidateMethodWithMessage(object value, string parameterName, string message);
-		private delegate void ValidateMethodWithException(object value, string parameterName, CreateExceptionFunction createException);
+		private delegate int GetCountDelegate(object collection);
 
-		// This methods are called through reflection.
+		// This method is called through reflection.
 		// ReSharper disable UnusedPrivateMember
-		private static ValidateMethod MakeValidateMethod<T>()
+		private static GetCountDelegate MakeGetCountDelegate<T, U>() where T : ICollection<U>
 		{
-			return (value, parameterName) => NotEmpty.Validate((ICollection<T>)value, parameterName);
-		}
-
-		private static ValidateMethodWithMessage MakeValidateMethodWithMessage<T>()
-		{
-			return (value, parameterName, message) => NotEmpty.Validate((ICollection<T>)value, parameterName, message);
-		}
-
-		private static ValidateMethodWithException MakeValidateMethodWithException<T>()
-		{
-			return (value, parameterName, createException) => NotEmpty.Validate((ICollection<T>)value, parameterName, createException);
+			return collection => ((T)collection).Count;
 		}
 		// ReSharper restore UnusedPrivateMember
 
-		private static ValidateMethod CreateValidateMethod(Type interfaceType)
+		private static GetCountDelegate CreateGetCountDelegate(Type interfaceType)
 		{
 			Type itemType = interfaceType.GetGenericArguments()[0];
 
-			MethodInfo openValidateMethod = typeof(NotEmptyAttribute).GetMethod("MakeValidateMethod", BindingFlags.Static | BindingFlags.NonPublic);
-			MethodInfo makeValidateMethod = openValidateMethod.MakeGenericMethod(itemType);
+			MethodInfo openMakeGetCountDelegate = typeof(NotEmptyAttribute).GetMethod("MakeGetCountDelegate", BindingFlags.Static | BindingFlags.NonPublic);
+			MethodInfo makeGetCountDelegate = openMakeGetCountDelegate.MakeGenericMethod(interfaceType, itemType);
 
-			return (ValidateMethod)makeValidateMethod.Invoke(null, new object[0]);
+			return (GetCountDelegate)makeGetCountDelegate.Invoke(null, new object[0]);
 		}
 
-		private static ValidateMethodWithMessage CreateValidateMethodWithMessage(Type interfaceType)
-		{
-			Type itemType = interfaceType.GetGenericArguments()[0];
-
-			MethodInfo openValidateMethodWithMessage = typeof(NotEmptyAttribute).GetMethod("MakeValidateMethod", BindingFlags.Static | BindingFlags.NonPublic);
-			MethodInfo makeValidateMethodWithMessage = openValidateMethodWithMessage.MakeGenericMethod(itemType);
-
-			return (ValidateMethodWithMessage)makeValidateMethodWithMessage.Invoke(null, new object[0]);
-		}
-
-		private static ValidateMethodWithException CreateValidateMethodWithException(Type interfaceType)
-		{
-			Type itemType = interfaceType.GetGenericArguments()[0];
-
-			MethodInfo openValidateMethodWithException = typeof(NotEmptyAttribute).GetMethod("MakeValidateMethod", BindingFlags.Static | BindingFlags.NonPublic);
-			MethodInfo makeValidateMethodWithException = openValidateMethodWithException.MakeGenericMethod(itemType);
-
-			return (ValidateMethodWithException)makeValidateMethodWithException.Invoke(null, new object[0]);
-		}
-
-		private ValidateMethod validateMethod;
-		private ValidateMethodWithMessage validateMethodWithMessage;
-		private ValidateMethodWithException validateMethodWithException;
+		private GetCountDelegate getCount;
 
 		/// <summary>
 		/// Validates the parameter.
@@ -176,16 +127,16 @@ namespace SixPack.Validation.PostSharp
 		{
 			if (value != null)
 			{
-				switch(parameterKind)
+				switch (parameterKind)
 				{
 					case ParameterKind.String:
 						ValidateString((string)value, parameterName);
 						break;
-					
+
 					case ParameterKind.ICollection:
 						ValidateCollection((ICollection)value, parameterName);
 						break;
-		
+
 					case ParameterKind.ICollectionOfT:
 						ValidateCollectionOfT(value, parameterName);
 						break;
@@ -198,59 +149,37 @@ namespace SixPack.Validation.PostSharp
 
 		private void ValidateCollectionOfT(object parameterValue, string parameterName)
 		{
-			if (Exception == null)
+			//PropertyInfo property = typeof(ICollection<>).GetProperty("Count", BindingFlags.Instance | BindingFlags.Public);
+			//int count = (int)property.GetValue(parameterValue, null
+			if (getCount(parameterValue) == 0)
 			{
-				if (Message == null)
-				{
-					validateMethod(parameterValue, parameterName);
-				}
-				else
-				{
-					validateMethodWithMessage(parameterValue, parameterName, Message);
-				}
-			}
-			else
-			{
-				validateMethodWithException(parameterValue, parameterName, CreateException);
+				InvokeValidationFailed(parameterName, parameterValue);
 			}
 		}
 
 		private void ValidateCollection(ICollection parameterValue, string parameterName)
 		{
-			if (Exception == null)
+			if (parameterValue.Count == 0)
 			{
-				if (Message == null)
-				{
-					NotEmpty.Validate(parameterValue, parameterName);
-				}
-				else
-				{
-					NotEmpty.Validate(parameterValue, parameterName, Message);
-				}
-			}
-			else
-			{
-				NotEmpty.Validate(parameterValue, parameterName, CreateException);
+				InvokeValidationFailed(parameterName, parameterValue);
 			}
 		}
 
 		private void ValidateString(string parameterValue, string parameterName)
 		{
-			if (Exception == null)
+			if (parameterValue.Length == 0)
 			{
-				if (Message == null)
-				{
-					NotEmpty.Validate(parameterValue, parameterName);
-				}
-				else
-				{
-					NotEmpty.Validate(parameterValue, parameterName, Message);
-				}
+				InvokeValidationFailed(parameterName, parameterValue);
 			}
-			else
-			{
-				NotEmpty.Validate(parameterValue, parameterName, CreateException);
-			}
+		}
+
+		private void InvokeValidationFailed(string parameterName, object parameterValue)
+		{
+			ValidationFailed(
+				string.Format(CultureInfo.InvariantCulture, "The parameter '{0}' is empty.", parameterName),
+				parameterValue,
+				parameterName
+			);
 		}
 	}
 }

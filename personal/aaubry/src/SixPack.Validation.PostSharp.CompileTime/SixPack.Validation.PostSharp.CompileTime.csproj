@@ -47,7 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttributeBasedAdvice.cs" />
+    <Compile Include="BuildParameterCollectionAdvice.cs" />
+    <Compile Include="CleanupParameterCollectionAdvice.cs" />
     <Compile Include="MethodProcessorAdvice.cs" />
+    <Compile Include="NameGenerator.cs" />
     <Compile Include="ParameterProcessorAdvice.cs" />
     <Compile Include="ParameterProcessorTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,10 +64,6 @@
     <ProjectReference Include="..\SixPack.Validation.PostSharp.Core\SixPack.Validation.PostSharp.Core.csproj">
       <Project>{B79E4E3C-38DC-4560-AC3F-EBCFE5242D7C}</Project>
       <Name>SixPack.Validation.PostSharp.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SixPack.Validation\SixPack.Validation.csproj">
-      <Project>{E196B9C3-4D95-4716-8D7E-D3E71ED5C56D}</Project>
-      <Name>SixPack.Validation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

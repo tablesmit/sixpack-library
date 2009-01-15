@@ -113,13 +113,34 @@ namespace SixPack.Validation.PostSharp
 		}
 
 		/// <summary>
-		/// Creates an exception of the type specified inthe <see cref="Exception"/> property.
+		/// Throws an exception according to the validator's parameters.
 		/// </summary>
-		/// <param name="defaultMessage">The default message of the exception.</param>
-		/// <returns></returns>
-		protected Exception CreateException(string defaultMessage)
+		/// <param name="validationMessage">The validation message.</param>
+		/// <param name="parameterName">Name of the parameter that is being validated.</param>
+		/// <param name="parameterValue">The value of the parameter.</param>
+		protected void ValidationFailed(string validationMessage, object parameterValue, string parameterName)
 		{
-			return (Exception)Activator.CreateInstance(exception, message ?? defaultMessage);
+			string errorMessage = message ?? validationMessage;
+			if (exception == null)
+			{
+				throw CreateDefaultException(errorMessage, parameterName, parameterValue);
+			}
+			else
+			{
+				throw (Exception)Activator.CreateInstance(exception, errorMessage);
+			}
+		}
+
+		/// <summary>
+		/// Creates the default exception for the validator.
+		/// </summary>
+		/// <param name="errorMessage">The error message.</param>
+		/// <param name="parameterName">Name of the parameter that is being validated.</param>
+		/// <param name="parameterValue">The value of the parameter.</param>
+		/// <returns></returns>
+		protected virtual Exception CreateDefaultException(string errorMessage, string parameterName, object parameterValue)
+		{
+			return new ArgumentException(errorMessage, parameterName);
 		}
 	}
 }

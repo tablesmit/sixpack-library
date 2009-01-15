@@ -54,20 +54,9 @@ namespace SixPack.Validation.PostSharp
 		/// <param name="parameterName">Name of the parameter.</param>
 		public override void Validate(object target, object value, string parameterName)
 		{
-			if(Exception == null)
+			if (value == null)
 			{
-				if(Message == null)
-				{
-					NotNull.Validate(value, parameterName);
-				}
-				else
-				{
-					NotNull.Validate(value, parameterName, Message);
-				}
-			}
-			else
-			{
-				NotNull.Validate(value, parameterName, CreateException);
+				throw new ArgumentNullException("value");
 			}
 		}
 	}

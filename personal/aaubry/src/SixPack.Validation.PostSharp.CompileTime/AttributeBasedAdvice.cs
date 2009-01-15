@@ -42,7 +42,8 @@ namespace SixPack.Validation.PostSharp.CompileTime
 			if (field == null)
 			{
 				field = new FieldDefDeclaration();
-				field.Name = string.Format(CultureInfo.InvariantCulture, "__~~~{0}", Guid.NewGuid());
+				string attributeName = ((NamedDeclaration)(((MemberRefDeclaration)(attribute.Constructor)).DeclaringType)).Name;
+				field.Name = NameGenerator.Generate(attributeName.Replace('.', '_'));
 				field.Attributes = FieldAttributes.Static | FieldAttributes.Private;
 				field.FieldType = attribute.Constructor.DeclaringType;
 				context.Method.DeclaringType.Fields.Add(field);

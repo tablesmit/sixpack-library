@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
@@ -42,6 +43,7 @@ namespace SixPack.Validation.PostSharp.Core
 		/// Creates a parameter collection.
 		/// </summary>
 		/// <returns></returns>
+		[DebuggerStepThrough]
 		public static ParameterDictionary CreateParameterCollection()
 		{
 			return new ParameterDictionary();

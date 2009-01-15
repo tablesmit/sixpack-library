@@ -12,9 +12,9 @@
     <AssemblyName>SixPack.Validation</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\SixPack.snk</AssemblyOriginatorKeyFile>
-	</PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\SixPack.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>

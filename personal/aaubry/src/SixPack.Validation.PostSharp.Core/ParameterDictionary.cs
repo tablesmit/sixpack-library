@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Diagnostics;
 
 namespace SixPack.Validation.PostSharp.Core
 {
@@ -13,6 +14,7 @@ namespace SixPack.Validation.PostSharp.Core
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ParameterDictionary"/> class.
 		/// </summary>
+		[DebuggerStepThrough]
 		internal ParameterDictionary()
 		{	
 		}
@@ -32,6 +34,7 @@ namespace SixPack.Validation.PostSharp.Core
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="value">The value.</param>
+		[DebuggerStepThrough]
 		public new void Add(string name, object value)
 		{
 			base.Add(name, value);
