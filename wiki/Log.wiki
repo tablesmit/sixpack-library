@@ -64,7 +64,7 @@ System.Exception: This is test #4!
 
 The *FileLogFormat* value of appSettings controls the format of the log entries. This value may contain any text, along with placeholders that are replaced by values, according to the following table. The string is formatted using *String.Format*, therefore the standard .NET formatting options apply.
 
-|| Placeholder || Description ||
+|| *Placeholder* || *Description* ||
 || {0} || Current date. ||
 || {1} || Log level. ||
 || {2} || Message. ||
@@ -105,4 +105,3 @@ System.InvalidOperationException: This is the third test!
 System.Exception: This is test #4!
 [Info] 20081129T110054.53: Log Stopped
 }}}
-
