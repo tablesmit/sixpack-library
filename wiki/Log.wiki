@@ -59,3 +59,50 @@ System.InvalidOperationException: This is the third test!
 System.Exception: This is test #4!
 20081129T110054.53 - UNKNOWN - log.exe - 0.0.0.0 - Info -  - Log Stopped
 }}}
+
+== Formatting the log entries ==
+
+The *FileLogFormat* value of appSettings controls the format of the log entries. This value may contain any text, along with placeholders that are replaced by values, according to the following table. The string is formatted using *String.Format*, therefore the standard .NET formatting options apply.
+
+|| Placeholder || Description ||
+|| {0} || Current date. ||
+|| {1} || Log level. ||
+|| {2} || Message. ||
+|| {3} || Name of the current Web server. ||
+|| {4} || Friendly name of the current AppDomain. ||
+|| {5} || IP address of the client. ||
+|| {6} || The name of the current method. This value is only available with debug builds of the library. ||
+
+=== Example ===
+
+Web.config:
+
+{{{
+<?xml version="1.0"?>
+<configuration>
+	<appSettings>
+		<add key="FileLogLevel" value="31" />
+		<add key="FileLogFile" value="log.cs.log" />
+		<add key="FileLogFormat " value="[{1}] {0:yyyyMMddTHHmmss.ff}: {2}" />
+	</appSettings>
+</configuration>
+}}}
+
+Log file:
+
+{{{
+[Info] 20081129T110054.51: Log Started
+[Debug] 20081129T110054.53: Version: 1.0
+[Debug] 20081129T110054.53: Version: Copyright: (c) SixPack
+[Debug] 20081129T110054.53: Version: Release Date: 2008-11-08
+[Debug] 20081129T110054.53: Hello World!
+[Info] 20081129T110054.53: Specify a level
+[Debug] 20081129T110054.53: This is a test!
+[Critical] 20081129T110054.53: This is another test!
+[Error] 20081129T110054.53: Exception occurred:
+System.InvalidOperationException: This is the third test!
+[Warning] 20081129T110054.53: Exception occurred:
+System.Exception: This is test #4!
+[Info] 20081129T110054.53: Log Stopped
+}}}
+
