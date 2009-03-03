@@ -1,0 +1,84 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{63E398ED-AB8B-4BAD-B545-9CF15F555E18}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SixPack</RootNamespace>
+    <AssemblyName>SixPackExtension</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SixPack, Version=1.0.1.25997, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\SixPack.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeGen\AbstractClass.cs" />
+    <Compile Include="CodeGen\AbstractConstructor.cs" />
+    <Compile Include="CodeGen\AbstractField.cs" />
+    <Compile Include="CodeGen\AbstractGetter.cs" />
+    <Compile Include="CodeGen\AbstractMethod.cs" />
+    <Compile Include="CodeGen\AbstractNamespace.cs" />
+    <Compile Include="CodeGen\AbstractParameter.cs" />
+    <Compile Include="CodeGen\AbstractProperty.cs" />
+    <Compile Include="CodeGen\AbstractSetter.cs" />
+    <Compile Include="CodeGen\AbstractUsingClause.cs" />
+    <Compile Include="CodeGen\AbstractVariable.cs" />
+    <Compile Include="CodeGen\CSharpClassVisitor.cs" />
+    <Compile Include="CodeGen\DataTableClass.cs" />
+    <Compile Include="CodeGen\IAbstractAccessor.cs" />
+    <Compile Include="CodeGen\IClassElement.cs" />
+    <Compile Include="CodeGen\IClassVisitor.cs" />
+    <Compile Include="CodeGen\SimpleClass.cs" />
+    <Compile Include="CodeGen\SimpleConstructor.cs" />
+    <Compile Include="CodeGen\SimpleField.cs" />
+    <Compile Include="CodeGen\SimpleGetter.cs" />
+    <Compile Include="CodeGen\SimpleMethod.cs" />
+    <Compile Include="CodeGen\SimpleNamespace.cs" />
+    <Compile Include="CodeGen\SimpleParameter.cs" />
+    <Compile Include="CodeGen\SimpleProperty.cs" />
+    <Compile Include="CodeGen\SimpleSetter.cs" />
+    <Compile Include="CodeGen\SimpleUsingClause.cs" />
+    <Compile Include="CodeGen\SimpleVariable.cs" />
+    <Compile Include="Web\UI\ControlFinder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xml\Serializers\SimpleSerializer.cs" />
+    <Compile Include="Text\TextNormalizationType.cs" />
+    <Compile Include="Text\TextSanitationMode.cs" />
+    <Compile Include="Text\TextSearchOptions.cs" />
+    <Compile Include="Text\TextUtilities.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

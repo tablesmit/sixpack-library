@@ -1,1 +1,2 @@
-<%@ Application Inherits="ReverseCachingTest.Global" %>
+
+<%@ Application Inherits="Global" %>

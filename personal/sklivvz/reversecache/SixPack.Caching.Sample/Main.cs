@@ -1,6 +1,7 @@
 // Main.cs
 //
 //  Copyright (C) 2008 Fullsix Marketing Interactivo LDA
+//  Author: Marco Cecconi <marco.cecconi@gmail.com>
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -19,65 +20,48 @@
 //
 using System;
 using System.Threading;
-
-using SixPack.Caching;
 using SixPack.Diagnostics;
 
-namespace PrefetchCache
+namespace SixPack.Caching.Sample
 {
-	class MainClass
+	internal class MainClass
 	{
 		public static void Main(string[] args)
 		{
 			TestClass2 idleTest = new TestClass2();
 			int? ares = idleTest.TestMethod2(4);
 			if (ares.HasValue)
-				Console.WriteLine("{1} - {0}",ares.Value,4);
+				Console.WriteLine("{1} - {0}", ares.Value, 4);
 			else
-				Console.WriteLine("{0} - NULL",4);
-			for (int i=0; i<10; i++)
+				Console.WriteLine("{0} - NULL", 4);
+			for (int i = 0; i < 10; i++)
 			{
-				for (int j=0; j<3; j++)
+				for (int j = 0; j < 3; j++)
 				{
 					TestClass2 tc = new TestClass2();
 					int? res = tc.TestMethod2(j);
 					if (res.HasValue)
-						Console.WriteLine("{1} - {0}",res.Value,j);
+						Console.WriteLine("{1} - {0}", res.Value, j);
 					else
-						Console.WriteLine("{0} - NULL",j);
+						Console.WriteLine("{0} - NULL", j);
 				}
 				Thread.Sleep(333);
 			}
 			Thread.Sleep(60000);
 		}
 	}
-	
-//	[PrefetchCached]
-//	public class TestClass: ContextBoundObject
-//	{
-//		[PrefetchCachedMethod(3, ReverseCacheOptions.AllowExpired)]
-//		public DateTime? TestMethod(int cacheTest)
-//		{
-//			Console.WriteLine("Inside TestMethod (cacheTest: {0})", cacheTest);
-//			Thread.Sleep(4000);
-//			return DateTime.Now;
-//		}
-//
-//	}
-	
+
 	public class TestClass2
 	{
 		public int? TestMethod2(int cacheTest)
 		{
-//			return DateTime.Now;
-			return SixPack.Caching.PrefetchCache.Get(delegate() {
-				Log.Instance.AddFormat("Inside TestMethod (cacheTest: {0})", cacheTest);
-				Thread.Sleep(500);
-				return cacheTest;
-			},
-			1,
-			PrefetchCacheOptions.None,
-			cacheTest);
+			//			return DateTime.Now;
+			return PrefetchCache.Get<int>(delegate
+			                              	{
+			                              		Log.Instance.AddFormat("Inside TestMethod (cacheTest: {0})", cacheTest);
+			                              		Thread.Sleep(500);
+			                              		return cacheTest;
+			                              	}, 1, PrefetchCacheOptions.None, cacheTest);
 		}
 	}
 }

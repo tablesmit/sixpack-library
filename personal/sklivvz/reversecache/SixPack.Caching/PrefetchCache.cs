@@ -18,12 +18,11 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
 //
 //
-
 using System;
-using System.Text;
 using System.Diagnostics;
-using System.Reflection;
 using System.Globalization;
+using System.Reflection;
+using System.Text;
 
 namespace SixPack.Caching
 {
@@ -33,19 +32,19 @@ namespace SixPack.Caching
 	/// <returns>
 	/// The delegate returns an object of type represented by TReturn that is going to be cached.
 	/// </returns>
-	public delegate TReturn Function<TReturn>();
-	
+	public delegate TReturn FetchingExecutor<TReturn>();
+
 	/// <summary>
 	/// A caching system with prefetching.
 	/// </summary>
-	public class PrefetchCache
+	public static class PrefetchCache
 	{
 		/// <summary>
-		/// Tries to get the result of the <see cref="Function{TReturn}"/> from the cache. If it can't it starts a new prefetch thread in
+		/// Tries to get the result of the <see cref="FetchingExecutor{TReturn}"/> from the cache. If it can't it starts a new prefetch thread in
 		/// the background.
 		/// </summary>
 		/// <param name="del">
-		/// A <see cref="Function{TReturn}"/> which will be prefetched by the class.
+		/// A <see cref="FetchingExecutor{TReturn}"/> which will be prefetched by the class.
 		/// </param>
 		/// <param name="cacheTime">
 		/// The number of seconds of cache life as a <see cref="System.Int32"/>/
@@ -54,13 +53,14 @@ namespace SixPack.Caching
 		/// A <see cref="PrefetchCacheOptions"/> flags, which specify the behavior of this cache.
 		/// </param>
 		/// <param name="args">
-		/// A series of <see cref="System.Object"/>s which represent the parameters upon which the <see cref="Function{TReturn}"/>
+		/// A series of <see cref="System.Object"/>s which represent the parameters upon which the <see cref="FetchingExecutor{TReturn}"/>
 		/// operates. The same delegate with different parameters will be cached separately.
 		/// </param>
 		/// <returns>
 		/// A TReturn, the result of the cache lookup.
 		/// </returns>
-		public static TReturn Get<TReturn>(Function<TReturn> del, int cacheTime, PrefetchCacheOptions prefetchCacheOptions, params object[] args)
+		public static TReturn Get<TReturn>(FetchingExecutor<TReturn> del, int cacheTime, PrefetchCacheOptions prefetchCacheOptions,
+		                                   params object[] args)
 		{
 			if (cacheTime > 0)
 			{
@@ -69,16 +69,16 @@ namespace SixPack.Caching
 				StringBuilder invokeSig =
 					new StringBuilder(caller.DeclaringType.FullName.GetHashCode().ToString("X", CultureInfo.InvariantCulture));
 				invokeSig.Append(caller.Name.GetHashCode().ToString("X", CultureInfo.InvariantCulture));
-				invokeSig.AppendFormat(" {0}.{1}", caller.DeclaringType.FullName.ToString().Split(',')[0], caller.Name);
+				invokeSig.AppendFormat(" {0}.{1}", caller.DeclaringType.FullName.Split(',')[0], caller.Name);
 				foreach (object o in args)
 				{
 					invokeSig.AppendFormat(CultureInfo.InvariantCulture, " <{0}>", o.GetHashCode());
-					Console.WriteLine("{0} - {1}", o.GetType().FullName.ToString(), o.ToString());
+					Console.WriteLine("{0} - {1}", o.GetType().FullName, o);
 				}
-				
+
 				return PrefetchCacheController.GetFromCache(invokeSig.ToString(), del, cacheTime, prefetchCacheOptions);
 			}
-			
+
 			return del();
 		}
 	}

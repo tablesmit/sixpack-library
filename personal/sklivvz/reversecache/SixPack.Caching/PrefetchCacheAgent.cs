@@ -18,45 +18,91 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
 //
 //
-
 using System;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
-
 using SixPack.Diagnostics;
 
 namespace SixPack.Caching
 {
 	internal class PrefetchCacheAgent<TReturn>: IDisposable, IPrefetchCacheAgent
 	{
-
-		readonly PrefetchCacheContent<TReturn> content;
-		readonly Timer timer;
-		readonly Function<TReturn> myDelegate;
-		readonly int cacheTime;
-		readonly PrefetchCacheTimer timerFunction;
-		readonly string name;
+		private readonly int cacheTime;
+		private readonly PrefetchCacheContent<TReturn> content;
+		private readonly FetchingExecutor<TReturn> myExecutor;
+		private readonly string name;
 #if DEBUG
-		string sig;
+		private readonly string sig;
+		private readonly Timer timer;
+		private readonly PrefetchCacheTimer timerFunction;
 #endif
-		private bool disposed = false;
+		private bool disposed;
 		private Exception exception;
-		
+
+		/// <summary>
+		/// Creates a new instance of <see cref="PrefetchCacheAgent{TReturn}"/>
+		/// </summary>
+		/// <param name="name">
+		/// The name of this agent in cache
+		/// </param>
+		/// <param name="del">
+		/// A <see cref="FetchingExecutor{TReturn}"/> which will be executed repeatedly each interval
+		/// to refresh the content.
+		/// </param>
+		/// <param name="cacheTime">
+		/// The length of time between attempts to refresh the content
+		/// </param>		
+		public PrefetchCacheAgent(string name, FetchingExecutor<TReturn> del, int cacheTime)
+		{
+#if DEBUG
+			sig = name;
+			Log.Instance.AddFormat("PrefetchCacheAgent - ctor invoked, id <{0}>, spawning...", sig);
+#endif
+			myExecutor = del;
+			this.cacheTime = cacheTime;
+			this.name = name;
+
+			content = new PrefetchCacheContent<TReturn>();
+			// Spawn Update Thread
+			timerFunction = new PrefetchCacheTimer(10);
+
+			timerFunction.Fetching += timerFunction_OnFetching;
+			timerFunction.Idling += timerFunction_OnIdling;
+
+			TimerCallback timerDelegate = timerFunction.Fetch;
+			timer = new Timer(timerDelegate, null, 0, cacheTime * 1000);
+#if DEBUG
+			Log.Instance.AddFormat("PrefetchCacheAgent - ...timer for '{0}' spawned!", sig);
+#endif
+		}
+
+		#region IDisposable Members
+
+		/// <summary>
+		/// Disposes this instance.
+		/// </summary>
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		#endregion
+
+		#region IPrefetchCacheAgent Members
+
 		/// <value>
 		/// Fired when the content has been refreshed 20 times without access.
 		/// </value>
 		public event EventHandler Idling;
-		
+
 		/// <value>
 		/// Indicates whether the cache has any content.
 		/// </value>
 		public bool HasContent
 		{
-			get
-			{
-				return content.ReturnMessage != null;
-			}
+			get { return content.ReturnMessage != null; }
 		}
+
 		/// <value>
 		/// The content of the cache.
 		/// </value>
@@ -68,16 +114,15 @@ namespace SixPack.Caching
 				return content;
 			}
 		}
+
 		/// <value>
 		/// The exception which occurred, if any.
 		/// </value>
 		public Exception Exception
 		{
-			get
-			{
-				return exception;
-			}
+			get { return exception; }
 		}
+
 		/// <value>
 		/// The name of this Agent in cache.
 		/// </value>
@@ -85,43 +130,7 @@ namespace SixPack.Caching
 		{
 			get { return name; }
 		}
-		/// <summary>
-		/// Creates a new instance of <see cref="PrefetchCacheAgent{TReturn}"/>
-		/// </summary>
-		/// <param name="name">
-		/// The name of this agent in cache
-		/// </param>
-		/// <param name="del">
-		/// A <see cref="Function{TReturn}"/> which will be executed repeatedly each interval
-		/// to refresh the content.
-		/// </param>
-		/// <param name="cacheTime">
-		/// The length of time between attempts to refresh the content
-		/// </param>		
-		public PrefetchCacheAgent(string name, Function<TReturn> del, int cacheTime)
-		{
-#if DEBUG
-			sig = name;
-			Log.Instance.AddFormat("PrefetchCacheAgent - ctor invoked, id <{0}>, spawning...", sig);
-#endif
-			myDelegate = del;
-			this.cacheTime = cacheTime;
-			this.name = name;
-			
-			content = new PrefetchCacheContent<TReturn>();
-			// Spawn Update Thread
-			timerFunction = new PrefetchCacheTimer(10);
-			
-			timerFunction.Fetching += timerFunction_OnFetching;
-			timerFunction.Idling += timerFunction_OnIdling;
-			
-			TimerCallback timerDelegate = new TimerCallback(timerFunction.Fetch);
-			timer = new Timer(timerDelegate, null, 0, cacheTime*1000);
-#if DEBUG
-			Log.Instance.AddFormat("PrefetchCacheAgent - ...timer for '{0}' spawned!", sig);
-#endif
-		}
-			
+
 		/// <summary>
 		/// Waits until the content is not null.
 		/// </summary>
@@ -182,33 +191,26 @@ namespace SixPack.Caching
 #endif
 		}
 
-		protected void OnIdling (EventArgs e)
+		#endregion
+
+		protected void OnIdling(EventArgs e)
 		{
 			if (Idling != null)
 				Idling(this, e);
 		}
 
-		/// <summary>
-		/// Disposes this instance.
-		/// </summary>
-		public void Dispose()
-		{
-		    Dispose(true);
-		    GC.SuppressFinalize(this);
-		}
-
 		private void Dispose(bool disposing)
 		{
-		    if(!this.disposed)
-		    {
-		        if(disposing)
-		        {
-				timer.Dispose();
-		        }
-		    }
-		    disposed = true;         
+			if (!disposed)
+			{
+				if (disposing)
+				{
+					timer.Dispose();
+				}
+			}
+			disposed = true;
 		}
-		
+
 		private void timerFunction_OnIdling(object sender, EventArgs e)
 		{
 			if (timerFunction.IdleFetches > 20)
@@ -219,16 +221,16 @@ namespace SixPack.Caching
 				OnIdling(EventArgs.Empty);
 			}
 		}
-		
+
 		private void timerFunction_OnFetching(object sender, EventArgs e)
 		{
 			try
 			{
-				TReturn res = myDelegate();
+				TReturn res = myExecutor();
 #if DEBUG
 				Log.Instance.AddFormat("PrefetchCacheAgent: {0} Acquiring lock...", sig);
 #endif
-				lock(content)
+				lock (content)
 				{
 					content.ReturnMessage = res;
 					content.ExpiryDate = DateTime.Now.AddSeconds(cacheTime);
@@ -242,16 +244,16 @@ namespace SixPack.Caching
 #endif
 				}
 			}
-			// we are catching exceptions because we are in a separate thread.
-			// the exception is then stored in the main class so it can be
-			// handled after the pulse all is executed.
+				// we are catching exceptions because we are in a separate thread.
+				// the exception is then stored in the main class so it can be
+				// handled after the pulse all is executed.
 			catch (Exception exception)
 			{
 #if DEBUG
 				Log.Instance.HandleException(exception);
 #endif
 				this.exception = exception;
-				lock(content)
+				lock (content)
 				{
 #if DEBUG
 					Log.Instance.AddFormat("PrefetchCacheAgent: {0} Error: Pulsing lock...", sig);

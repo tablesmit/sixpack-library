@@ -18,46 +18,43 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
 //
 //
-
 using System;
-using System.Web;
+using System.Threading;
 using System.Web.UI;
 
-using SixPack.Caching;
-
-namespace ReverseCachingTest
+namespace SixPack.Caching.Test.Web
 {
-	
-	
-	public partial class Default : System.Web.UI.Page
+	public partial class Default: Page
 	{
+		public virtual void button1Clicked(object sender, EventArgs args)
+		{
+			button1.Text = "You clicked me";
+			for (int j = 0; j < 3; j++)
+			{
+				TestClass2 tc = new TestClass2();
+				int? res = tc.TestMethod2(j);
+				if (res.HasValue)
+					Response.Write(string.Format("{1} - {0}<br>", res.Value, j));
+				else
+					Response.Write(string.Format("{0} - NULL<br>", j));
+			}
+		}
+
+		#region Nested type: TestClass2
+
 		public class TestClass2
 		{
 			public int? TestMethod2(int cacheTest)
 			{
 				//			return DateTime.Now;
-				return PrefetchCache.Get(delegate() {
-					System.Threading.Thread.Sleep(500);
-					return cacheTest;
-				},
-				1,
-				PrefetchCacheOptions.None,
-				cacheTest);
+				return PrefetchCache.Get<int>(delegate
+				                              	{
+				                              		Thread.Sleep(500);
+				                              		return cacheTest;
+				                              	}, 1, PrefetchCacheOptions.None, cacheTest);
 			}
 		}
-		
-		public virtual void button1Clicked(object sender, EventArgs args)
-		{
-			button1.Text = "You clicked me";
-			for (int j=0; j<3; j++)
-			{
-				TestClass2 tc = new TestClass2();
-				int? res = tc.TestMethod2(j);
-				if (res.HasValue)
-					Response.Write(string.Format("{1} - {0}<br>",res.Value,j));
-				else
-					Response.Write(string.Format("{0} - NULL<br>",j));
-			}
-		}
+
+		#endregion
 	}
 }
