@@ -1,6 +1,5 @@
-#summary Logging with the SixPack library
 #labels Featured
-
+http://sites.google.com/site/sixpacklibrary/_/rsrc/1237036619924/Home/sixpack-icon.gif?height=48&width=48
 =Logging=
 
 This page gives a basic example of logging with the Sixpack log class. Log can be redirected to file or email.
