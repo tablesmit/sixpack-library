@@ -1,6 +1,5 @@
-#summary List of project using the SixPack library code
 #labels Phase-Support
-List of sites currently using the library
+http://sites.google.com/site/sixpacklibrary/_/rsrc/1237036619924/Home/sixpack-icon.gif?height=48&width=48
 
 ==Banking==
  * Banco Espirito Santo Angola http://www.besa.ao
