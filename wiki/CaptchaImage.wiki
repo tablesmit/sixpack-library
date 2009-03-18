@@ -28,3 +28,5 @@ namespace sixpackexamples
 	}
 }
 }}}
+Result:
+[http://sixpack-library.googlecode.com/svn/wiki/foobar.png]
