@@ -81,7 +81,7 @@ Web.config:
 	<appSettings>
 		<add key="FileLogLevel" value="31" />
 		<add key="FileLogFile" value="log.cs.log" />
-		<add key="FileLogFormat " value="[{1}] {0:yyyyMMddTHHmmss.ff}: {2}" />
+		<add key="FileLogFormat" value="[{1}] {0:yyyyMMddTHHmmss.ff}: {2}" />
 	</appSettings>
 </configuration>
 }}}
