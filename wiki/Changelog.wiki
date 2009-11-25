@@ -2,8 +2,6 @@
 
 = Changes since version 1.1 beta 2 =
 
-== BigInteger class ==
-
   * Added an overload of *BigInteger.ToString* that allows to specify the characters that will be used to represent the digits. Added the corresponding constructor.
 {{{
 BigInteger value = new BigInteger("1234DEADBEEF", 16);
@@ -12,7 +10,30 @@ const string charSet = "ABCDEFGHIJKLMNOP";
 	
 string valueInLetters = value.ToString(charSet);
 Console.WriteLine("Value converted to base 16 using letters:\n{0}\n", valueInLetters);
+// Output is BCDENOKNLOOP
 
 BigInteger valueFromLetters = new BigInteger(valueInLetters, charSet);
 Console.WriteLine("Value parsed from base 16 using letters:\n{0}\n", valueFromLetters.ToString(16));
+// Output is 1234DEADBEEF
+}}}
+
+
+
+  * Added the class RegularExpressionPatterns, which contains general-purpose regular expression patterns.
+
+  * Added the class GenericComparer`<`TCompared`>`, an implementation of IComparer`<`TCompared`>` that allows for natural and reverse ordering of elements that implement IComparable`<`TCompared`>`.
+{{{
+List<int> items = new List<int> { 1, 7, 4, 5, 2, 9, 8 };
+
+items.Sort(GenericComparer<int>.Natural);
+
+foreach(int item in items) Console.Write(item);
+Console.WriteLine();
+// Output is 1245789
+
+items.Sort(GenericComparer<int>.Reverse);
+
+foreach (int item in items) Console.Write(item);
+Console.WriteLine();
+// Output is 9875421
 }}}
