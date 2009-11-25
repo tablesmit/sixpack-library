@@ -1,0 +1,18 @@
+#summary Describes the changes that have been made to the library
+
+= Changes since version 1.1 beta 2 =
+
+== BigInteger class ==
+
+  * Added an overload of *BigInteger.ToString* that allows to specify the characters that will be used to represent the digits. Added the corresponding constructor.
+{{{
+BigInteger value = new BigInteger("1234DEADBEEF", 16);
+
+const string charSet = "ABCDEFGHIJKLMNOP";
+	
+string valueInLetters = value.ToString(charSet);
+Console.WriteLine("Value converted to base 16 using letters:\n{0}\n", valueInLetters);
+
+BigInteger valueFromLetters = new BigInteger(valueInLetters, charSet);
+Console.WriteLine("Value parsed from base 16 using letters:\n{0}\n", valueFromLetters.ToString(16));
+}}}
