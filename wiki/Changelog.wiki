@@ -72,7 +72,17 @@ Console.WriteLine("UserId: {0}, ExpirationDate: {1}", decodedToken[0], decodedTo
 
   * Fixed a bug in the *XmlRpc* class. It was not using the correct encoding.
 
-  * Modified the *Log* class to add 
+  * Modified the *Log* class to allow to integrate with another logging system. The integration is done by creating a class that implements the *ILog* interface, and then registering that type in the appSettings section of the configuration file.
+{{{
+<!-- Replace the default log implementation by MyNamespace.MyLogImplementation -->
+<!-- The class MyLogImplementation must implement ILog or inherit from LogBase -->
+<add key="SixPackLogImplementation" value="MyNamespace.MyLogImplementation, MyAssembly"/>
+}}}
 
+  * Added a custom implementation of the ILog interface, *NullLog* that allows to completely disable the SixPack log.
+{{{
+<!-- Disable the SixPack log -->
+<add key="SixPackLogImplementation" value="SixPack.Diagnostics.NullLog, SixPack"/>
+}}}
 
-
+  * Removed the build number from the assembly version because that causes many problems when using libraries that are compiled against an older (but compatible) version of SixPack.
