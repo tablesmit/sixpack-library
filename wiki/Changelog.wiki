@@ -17,11 +17,9 @@ Console.WriteLine("Value parsed from base 16 using letters:\n{0}\n", valueFromLe
 // Output is 1234DEADBEEF
 }}}
 
+  * Added the class *RegularExpressionPatterns*, which contains general-purpose regular expression patterns.
 
-
-  * Added the class RegularExpressionPatterns, which contains general-purpose regular expression patterns.
-
-  * Added the class GenericComparer`<`TCompared`>`, an implementation of IComparer`<`TCompared`>` that allows for natural and reverse ordering of elements that implement IComparable`<`TCompared`>`.
+  * Added the class *GenericComparer`<`TCompared`>`*, an implementation of IComparer`<`TCompared`>` that allows for natural and reverse ordering of elements that implement IComparable`<`TCompared`>`.
 {{{
 List<int> items = new List<int> { 1, 7, 4, 5, 2, 9, 8 };
 
@@ -37,3 +35,15 @@ foreach (int item in items) Console.Write(item);
 Console.WriteLine();
 // Output is 9875421
 }}}
+
+  * Added the method *TextUtilities.Hash* to easily calculate a hash of one or more strings.
+{{{
+string userName = "John Smith";
+string documentNumnber = "0001234";
+
+string cacheFileName = TextUtilities.Hash(userName, documentNumnber);
+Console.WriteLine(cacheFileName);
+// Output is cdK0B5P7yM0x2u8Fdou77QhB8Zk
+}}}
+
+  * Modified the *MailMessage* class. If the mail properties are not specified, it uses the .NET mail configuration (configuration/system.net/mailSettings).
