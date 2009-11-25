@@ -66,3 +66,13 @@ Console.WriteLine("UserId: {0}, ExpirationDate: {1}", decodedToken[0], decodedTo
 // Output is UserId: 12345, ExpirationDate: 26-11-2009 13:00:20
 }}}
 
+  * Modified the PixelFormat used by the *ImageSizing* class so that it supports transparency.
+
+  * Added a parameter to the *ServiceResult* class that controls whether to send the full exception to the client, to avoid information disclosure issues.
+
+  * Fixed a bug in the *XmlRpc* class. It was not using the correct encoding.
+
+  * Modified the *Log* class to add 
+
+
+
