@@ -1,4 +1,26 @@
 #summary Describes the changes that have been made to the library
+#labels Featured
+
+= Changes since version 1.2 =
+
+  * Updated to .NET 3.5
+  * Added SixPack.Reflection project. This project adds utilities for reflection and manipulation of expression trees.
+  * Added SixPack.Data.Entity. This project adds helper methods that extend the Entity Framework.
+  * Removed the obsolete HashSet type.
+  * Added extension methods that implement BinarySearch on lists.
+  * Added the CompositeKey type that can be used to represent a composite key in a collection.
+  * Added the SixPack.Collections.Generic.Extensions namespace that provides helper methods for common needs when manipulating collections. These methods include:
+    * IDictionary{K, ICollection{T}}.Add(), which simplifies implementing a multidictionary with a dictionary of collections.
+    * IEnumerable{T}.ToTree(), which builds a tree from a sequence.
+    * IEnumerable{T}.Index(), which adds properties to the items of a sequence, to simplify the treatment of special cases (first, last, alternating item) when rendering the sequence.
+  * Added the TypeConverter class that can perform type conversions using all the standard mechanisms in the .NET framework, including:
+    * TypeConverterAttribute;
+    * conversion operators;
+    * Convert.ChangeType;
+    * conversion from and to nullable types;
+    * special cases for DBNull, Enum, TimeSpan and Boolean.
+  * Reusable implementation of GetHashCode, available from the HashCode and HashCodeBuilder classes.
+  * String.DelimitWith() extension method that can concatenate any sequence into a string using a user-specified separator, item format string, prefix and suffix.
 
 = Changes since version 1.1 beta 2 =
 
