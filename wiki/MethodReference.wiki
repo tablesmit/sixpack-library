@@ -1,11 +1,11 @@
 #summary Describes how to use MethodReference
 = Introduction =
 
-The MethodReference class allows to obtain references to MethodInfo in a type-safe way.
+The `MethodReference` class allows to obtain references to MethodInfo in a type-safe way.
 
 = Details =
 
-To retrieve a MethodInfo, you need to call one of the overloads of MethodReference.Get(). Reach of these overloads takes an Expression and returns the a reference to the method that is invoked by the expression.
+To retrieve a MethodInfo, you need to call one of the overloads of `MethodReference`.Get(). Reach of these overloads takes an Expression and returns the a reference to the method that is invoked by the expression.
 
 {{{
 MethodInfo writeLine = MethodReference.Get(
