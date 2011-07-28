@@ -1,7 +1,7 @@
 #summary Describes how to use MethodReference
 = Introduction =
 
-The `MethodReference` class allows to obtain references to MethodInfo in a type-safe way.
+The `MethodReference` class allows to obtain references to `MethodInfo` in a type-safe way.
 
 = Details =
 
